@@ -10083,6 +10083,7 @@ In particular, return the buffer position of the first `for' kwd."
         (goto-char bracket)
         (cond
          ((looking-at "[({[][ \t]*\\(/[/*]\\|$\\)")
+          ;; '(' or '{' or '[' <whitespace>* [comment] <end of line>
           (when (save-excursion (skip-chars-backward " \t)")
                                 (looking-at ")"))
             (backward-list))
@@ -10097,9 +10098,9 @@ In particular, return the buffer position of the first `for' kwd."
                 (t
                  (+ (current-column) js2-basic-offset))))
          (t
+          (back-to-indentation)
           (unless same-indent-p
-            (forward-char)
-            (skip-chars-forward " \t"))
+            (forward-char js2-basic-offset))
           (current-column))))
 
        (continued-expr-p js2-basic-offset)
